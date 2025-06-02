@@ -1,7 +1,9 @@
 // 리액트에서는 컴포넌트 함수명과 파일명을 똑같이 쓴다. 대문자로 시작
 // import 컴포넌트 함수명 from 파일명
-import MyComponent from './MyComponent'
-import Type from './Type'
+/* import MyComponent from './MyComponent'
+import Type from './Type' */
+//import Say from './Say'
+import InputText from './InputText'
 
 // function App() {}
 // 혹은
@@ -25,11 +27,15 @@ const App = () => {
    //       // }}
    //    />
    // )
-   return (
+
+   /* return (
       <MyComponent job="강사" forNumber={1}>
          맑음
       </MyComponent>
-   )
+   ) */
+
+   // return <Say />
+   return <InputText />
 }
 
 export default App
