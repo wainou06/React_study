@@ -32,15 +32,19 @@ export const getUpcomingMovies = async (page = 1) => {
       params: {
          language: 'ko-KR',
          page,
-         region: 'KR'
-      }
+         region: 'KR',
+      },
    })
    return response
 }
 
 // 영화상세 정보 가져오기
 export const getMovieDetails = async (movieId) => {
-   const response = await tmdbApi.get(`/movie/${movieId}`)
+   const response = await tmdbApi.get(`/movie/${movieId}`, {
+      params: {
+         language: 'ko-KR',
+      },
+   })
    return response //응답결과 데이터 리턴
 }
 

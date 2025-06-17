@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getMovies } from '../api/tmdbApi'
+import { getMovies, getMovieDetails } from '../api/tmdbApi'
+import MovieDetail from '../components/UseRedux/MovieDetail'
 
 // createAsyncThunk: 비동기 thunk 액션 -> 영화 목록을 API로부터 가져옴
 // createAsyncThunk(type명, 비동기 함수)
@@ -10,10 +11,18 @@ export const fetchMovies = createAsyncThunk('movies/fetchMovies', async () => {
    return response.data.results
 })
 
+//영화상세 정보
+export const fetchMovieDetails = createAsyncThunk('movies/fetchMovieDetails', async (movieId) => {
+   const response = await getMovieDetails(movieId)
+   console.log(response)
+   return response.data
+})
+
 const movieSlice = createSlice({
    name: 'movies',
    initialState: {
       movies: [],
+      movieDetails: null, // 영화 상세 정보
       loading: false,
       error: null,
    },
@@ -25,6 +34,7 @@ const movieSlice = createSlice({
          // 데이터를 가져오는 동안
          .addCase(fetchMovies.pending, (state) => {
             state.loading = true
+            state.error = null // 다른 액션 생성자 함수에서 에러 발생시 에러 메세지가 남아있는 경우를 대비해 초기화
          })
          // 데이터를 성공적으로 가져온 경우
          .addCase(fetchMovies.fulfilled, (state, action) => {
@@ -34,6 +44,19 @@ const movieSlice = createSlice({
          })
          // api 호출이 실패한 경우
          .addCase(fetchMovies.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.error.message
+         })
+         .addCase(fetchMovieDetails.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchMovieDetails.fulfilled, (state, action) => {
+            state.loading = false
+            // action.payload는 fetchMovieDetails()에서 리턴해주는 값
+            state.movieDetails = action.payload
+         })
+         .addCase(fetchMovieDetails.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message
          })

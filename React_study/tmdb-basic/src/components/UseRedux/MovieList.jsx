@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchMovies } from '../../features/movieSlice'
+import { Link } from 'react-router-dom'
 
 function MovieList() {
    const dispatch = useDispatch()
@@ -19,9 +20,9 @@ function MovieList() {
          <h1>인기영화 목록</h1>
          <ul>
             {movies.map((movie) => (
-               <li key={movie.id}>
-                  <a href={'/detail/' + movie.id}>{movie.title}</a>
-               </li>
+               <Link to={`/detail/${movie.id}`} key={movie.id}>
+                  <li>{movie.title}</li>
+               </Link>
             ))}
          </ul>
       </div>
