@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getMovies, getMovieDetails } from '../api/tmdbApi'
-import MovieDetail from '../components/UseRedux/MovieDetail'
 
 // createAsyncThunk: 비동기 thunk 액션 -> 영화 목록을 API로부터 가져옴
 // createAsyncThunk(type명, 비동기 함수)
@@ -14,7 +13,6 @@ export const fetchMovies = createAsyncThunk('movies/fetchMovies', async () => {
 //영화상세 정보
 export const fetchMovieDetails = createAsyncThunk('movies/fetchMovieDetails', async (movieId) => {
    const response = await getMovieDetails(movieId)
-   console.log(response)
    return response.data
 })
 
