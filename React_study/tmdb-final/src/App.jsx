@@ -38,7 +38,7 @@ function App() {
          <Route path="/upcoming" element={<MovieCategory category="upcoming" key="upcoming" />} />
 
          <Route path="/search" element={<SearchResults />} />
-         <Route path="/detail/:movidId" element={<Detail />} />
+         <Route path="/detail/:movieId" element={<Detail />} />
          <Route path="/*" element={<NotFound />} />
       </Routes>
    )

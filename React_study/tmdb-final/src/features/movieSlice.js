@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getMovies } from '../api/tmdbApi'
+import { getMovieCredits, getMovieDetails, getMovies } from '../api/tmdbApi'
 
 export const fetchMovies = createAsyncThunk('movies/fetchMovies', async ({ category, page }) => {
    // category: 'popular', page: 1
@@ -7,10 +7,23 @@ export const fetchMovies = createAsyncThunk('movies/fetchMovies', async ({ categ
    return response.data.results
 })
 
+export const fetchMovieDetails = createAsyncThunk('movies/fetchMovieDetails', async (movieId) => {
+   const response = await getMovieDetails(movieId)
+   return response.data
+})
+
+export const fetchMovieCredits = createAsyncThunk('movies/fetchMovieCredits', async (movieId) => {
+   const response = await getMovieCredits(movieId)
+   console.log(response)
+   return response.data
+})
+
 const movieSlice = createSlice({
    name: 'movies',
    initialState: {
       movies: [], // 현재상영 or 개봉예정 or 인기영화 목록
+      movieDetails: null,
+      movieCredits: null,
       loading: false,
       error: null,
    },
@@ -33,6 +46,30 @@ const movieSlice = createSlice({
             }
          })
          .addCase(fetchMovies.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.error.message
+         })
+         .addCase(fetchMovieDetails.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchMovieDetails.fulfilled, (state, action) => {
+            state.loading = false
+            state.movieDetails = action.payload
+         })
+         .addCase(fetchMovieDetails.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.error.message
+         })
+         .addCase(fetchMovieCredits.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchMovieCredits.fulfilled, (state, action) => {
+            state.loading = false
+            state.movieCredits = action.payload
+         })
+         .addCase(fetchMovieCredits.rejected, (state, action) => {
             state.loading = false
             state.error = action.error.message
          })
